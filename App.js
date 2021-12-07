@@ -346,3 +346,5 @@ App.prototype.start = function() {
 App.prototype.createStore = function(name, options) {
   this.$stores[name] = new Store(this, name, options);
 }
+
+export default App;
