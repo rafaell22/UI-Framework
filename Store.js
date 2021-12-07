@@ -1,24 +1,16 @@
-/*
-new Store({
-  state: {
-    inventory: ,
-  },
-  mutations: {
-    setCollectedState,
-  },
-  actions: {
-    collectItem,
-    uncollectItem,
-  },
-  getters: {
-    inventory,
-    itemById,
-  },
-})
-*/
-
 // TODO - pass ne value to pubsub
 
+/**
+ * Create a data store similar to how Vuex store works. Store data and share it between components, use actions to trigger mutations and edit the data.
+ * @param       {App}     app           Application instance (the Store will be loaded in App instance)
+ * @param       {string}  name          Reference name of the store. Needs to be unique
+ * @param       {object}  state         Data attributes and values
+ * @param       {object}  mutations     Functions used to modify the data
+ * @param       {object}  actions       Functions used to trigger mutations
+ * @param       {object}  getters       Functions used to retrieve data from store
+ * @param       {object}  methods       Aditional methods that can be used by the actions
+ * @constructor
+ */
 function Store(app, name, {
   state,
   mutations,
@@ -76,3 +68,5 @@ function Store(app, name, {
         }
     }
 }
+
+export default Store;

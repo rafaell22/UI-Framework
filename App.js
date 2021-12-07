@@ -1,4 +1,6 @@
 import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.0.1/validation.js';
+import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/PubSub.js';
+import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/Store.js';
 
 /**
  * Class for the App. The app represents the main component of the application.
@@ -12,7 +14,7 @@ import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.
  * @param {function} boot Function to run during app creation. Use it to create libraries, stores and other variables that should be available to all components
 **/
 function App(boot) {
-  this.$version = '0.0.30';
+  this.$version = '0.0.31';
   this._componentTypes = {};
   this._components = [];
   this.$libraries = {};
