@@ -1,15 +1,8 @@
-/*
-new Component('ComponentName', {
-  template,
-  styles,
-  props,
-  data,
-  methods,
-  watchers,
-  setup,
-  mounted,
-});
-*/
+import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.2.0/validation.js';
+// import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/PubSub.js';
+import PubSub from './/PubSub.js';
+// import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/Store.js';
+import Store from './Store.js';
 
 /**
  * Class for the App. The app represents the main component of the application.
@@ -23,16 +16,23 @@ new Component('ComponentName', {
  * @param {function} boot Function to run during app creation. Use it to create libraries, stores and other variables that should be available to all components
 **/
 function App(boot) {
-  this.$version = '0.0.29';
+  this.$version = '0.0.32';
   this._componentTypes = {};
   this._components = [];
   this.$libraries = {};
   this.$stores = {};
   this.$pubSub = new PubSub();
   
-  if(!(boot instanceof Function)) throw new Error(`Expected "boot" of type Function, but found ${boot.cobstructor.name}`);
-
-  boot();
+  try {
+    validation(boot).undefined();
+  } catch (e) {
+    try {
+      validation(boot).function();
+      boot();
+    } catch (errorRunningBoot) {
+      throw new Error('Expected "boot" of type Function.');
+    }
+  }
 }
 
 /*
@@ -44,6 +44,18 @@ function App(boot) {
     > attribute: event to subscribe in the pubsub
     > value: function that will be called when the event is published
 */
+/**
+ * Create components for the application. The component is built during runtime.
+ * @param  {string}   name                   Component's name. Used in the HTML to create new Components.
+ * @param  {string}   template               String containing the Component's HTML. Can contain other components
+ * @param  {string}   styles                 String containing the Component's CSS. The CSS is appended to the head and is not scoped by default.
+ * @param  {object}   props                  Object of properties that get values from HTML components dataset. Allow to set properties throug the HTML
+ * @param  {function} setup                  Function to run at the start of the component creation, before the template and the style are processed
+ * @param  {function} mounted                Function to run at the end of the component creatiion, after all component's parts are processed
+ * @param  {object}   data                   Component's attributes.
+ * @param  {object}   methods                Component's methods
+ * @param  {object}   watchers               Create watchers that subscribe to the App's PubSub. The key avlues correspond to the PubSub events.
+ */
 App.prototype.createComponent = function(
 name, 
 {
@@ -56,6 +68,88 @@ name,
   methods,
   watchers,
 }) {
+  try {
+    validation(template).string();
+  } catch (errorValidatingTemplate) {
+    throw new Error(`Error validating 'template'. ${errorValidatingTemplate.message}`);
+  }
+  
+  try {
+    validation(styles).undefined();
+  } catch (e) {
+    try {
+      validation(styles).string();
+    } catch (errorValidatingStyles) {
+      throw new Error(`Error validating 'styles'. ${errorValidatingStyles.message}`);
+    }
+  }
+  
+  try {
+    validation(props).undefined();
+  } catch (e) {
+    try {
+      validation(props).array();
+    } catch (errorValidatingProps) {
+      throw new Error(`Error validating 'props'. ${errorValidatingProps.message}`);
+    }
+  }
+  
+  try {
+    validation(setup).undefined();
+  } catch (e) {
+    try {
+      validation(setup).function();
+    } catch (errorValidatingSetup) {
+      throw new Error(`Error validating 'setup'. ${errorValidatingSetup.message}`);
+    }
+  }
+  
+  try {
+    validation(mounted).undefined();
+  } catch (e) {
+    try {
+      validation(mounted).function();
+    } catch (errorValidatingMounted) {
+      throw new Error(`Error validating 'mounted'. ${errorValidatingMounted.message}`);
+    }
+  }
+  
+  try {
+    validation(data).undefined();
+  } catch (e) {
+    try {
+      validation(data).object();
+    } catch (errorValidatingData) {
+      throw new Error(`Error validating 'data'. ${errorValidatingData.message}`);
+    }
+  }
+  
+  try {
+    validation(methods).undefined();
+  } catch (e) {
+    try {
+      validation(methods).object();
+      for (const methodName in methods) {
+        validation(methods[methodName]).function();
+      }
+    } catch (errorValidatingMethods) {
+      throw new Error(`Error validating 'methods'. ${errorValidatingMethods.message}`);
+    }
+  }
+  
+  try {
+    validation(watchers).undefined();
+  } catch (e) {
+    try {
+      validation(watchers).object();
+      for (const watcherEvent in watchers) {
+        validation(watchers[watcherEvent]).function();
+      }
+    } catch (errorValidatingWatchers) {
+      throw new Error(`Error validating 'watchers'. ${errorValidatingWatchers.message}`);
+    }
+  }
+
   const appInstance = this;
   const Component = function(rootElement, propValues) {
     this.app = appInstance;
@@ -87,7 +181,6 @@ name,
     }
 
     this.rootElement = rootElement;
-    console.log('innerHTML: ', this.rootElement.innerHTML);
     this.rootElement.innerHTML += this.template;
     const boundElements = rootElement.querySelectorAll('[data-bind]');
     const boundAttrCallbacks = {};
@@ -234,15 +327,12 @@ name,
   
   // assign each method function to the component's prototype
   for(let method in methods) {
-      if(!(methods[method] instanceof Function)) throw new Error(`Expected method of type Function, but ${method} is of type ${methods[method].constructor.name}.`);
-    Component.prototype[method] = methods[method];
+      Component.prototype[method] = methods[method];
   }
   
   // subscribe to events from the app pubsub
   // The event is the name of the watcher attribute
   for(let watcher in watchers) {
-      if(!(watchers[watcher] instanceof Function)) throw new Error(`Expected watcher of type Function, but ${watcher} is of type ${watchers[watcher].constructor.name}.`);
-      
       this.$pubSub.subscribe(watcher, watchers[watcher]);
   }
   
@@ -259,9 +349,14 @@ App.prototype.NOOP = function () {};
   * @param {HTMLComponent} rootElement The source element where to search for HTML elements bound to components
 **/
 App.prototype.buildComponents = function(rootElement) {
+    try {
+      validation(rootElement).htmlElement();
+    } catch (errorValidatingRootElement) {
+      throw new Error(`Error validating 'rootElement'. ${errorValidatingRootElement.message}`);
+    }
+  
     const components = rootElement.querySelectorAll('[data-component]');
     if(components.length === 0) return;
-    console.log('components: ', components);
     components.forEach(component => {
       const props = {};
       for(const prop in component.dataset) {
@@ -283,3 +378,9 @@ App.prototype.start = function() {
 App.prototype.createStore = function(name, options) {
   this.$stores[name] = new Store(this, name, options);
 }
+
+export {
+  App,
+  PubSub,
+  Store
+};
