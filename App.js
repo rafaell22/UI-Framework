@@ -1,8 +1,6 @@
 import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.2.0/validation.js';
-// import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/PubSub.js';
-import PubSub from './/PubSub.js';
-// import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/Store.js';
-import Store from './Store.js';
+import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/PubSub.js';
+import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/Store.js';
 
 /**
  * Class for the App. The app represents the main component of the application.
