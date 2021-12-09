@@ -1,6 +1,8 @@
-import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.0.1/validation.js';
-import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/PubSub.js';
-import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/Store.js';
+import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.2.0/validation.js';
+// import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/PubSub.js';
+import PubSub from './/PubSub.js';
+// import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/Store.js';
+import Store from './Store.js';
 
 /**
  * Class for the App. The app represents the main component of the application.
@@ -14,7 +16,7 @@ import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.31/Sto
  * @param {function} boot Function to run during app creation. Use it to create libraries, stores and other variables that should be available to all components
 **/
 function App(boot) {
-  this.$version = '0.0.31';
+  this.$version = '0.0.32';
   this._componentTypes = {};
   this._components = [];
   this.$libraries = {};
@@ -22,10 +24,14 @@ function App(boot) {
   this.$pubSub = new PubSub();
   
   try {
-    validation(boot).function();
-    boot();
-  } catch (errorRunningBoot) {
-    throw new Error(`Expected "boot" of type Function, but found ${boot.cobstructor.name}`);
+    validation(boot).undefined();
+  } catch (e) {
+    try {
+      validation(boot).function();
+      boot();
+    } catch (errorRunningBoot) {
+      throw new Error('Expected "boot" of type Function.');
+    }
   }
 }
 
@@ -69,51 +75,79 @@ name,
   }
   
   try {
-    validation(styles).string();
-  } catch (errorValidatingStyles) {
-    throw new Error(`Error validating 'styles'. ${errorValidatingStyles.message}`);
-  }
-  
-  try {
-    validation(props).object();
-  } catch (errorValidatingProps) {
-    throw new Error(`Error validating 'props'. ${errorValidatingProps.message}`);
-  }
-  
-  try {
-    validation(setup).function();
-  } catch (errorValidatingSetup) {
-    throw new Error(`Error validating 'setup'. ${errorValidatingSetup.message}`);
-  }
-  
-  try {
-    validation(mounted).function();
-  } catch (errorValidatingMounted) {
-    throw new Error(`Error validating 'mounted'. ${errorValidatingMounted.message}`);
-  }
-  
-  try {
-    validation(data).object();
-  } catch (errorValidatingData) {
-    throw new Error(`Error validating 'data'. ${errorValidatingData.message}`);
-  }
-  
-  try {
-    validation(methods).object();
-    for (const methodName in methods) {
-      validation(methods[methodName]).function();
+    validation(styles).undefined();
+  } catch (e) {
+    try {
+      validation(styles).string();
+    } catch (errorValidatingStyles) {
+      throw new Error(`Error validating 'styles'. ${errorValidatingStyles.message}`);
     }
-  } catch (errorValidatingMethods) {
-    throw new Error(`Error validating 'methods'. ${errorValidatingMethods.message}`);
   }
   
   try {
-    validation(watchers).object();
-    for (const watcherEvent in watchers) {
-      validation(watchers[watcherEvent]).function();
+    validation(props).undefined();
+  } catch (e) {
+    try {
+      validation(props).array();
+    } catch (errorValidatingProps) {
+      throw new Error(`Error validating 'props'. ${errorValidatingProps.message}`);
     }
-  } catch (errorValidatingWatchers) {
-    throw new Error(`Error validating 'watchers'. ${errorValidatingWatchers.message}`);
+  }
+  
+  try {
+    validation(setup).undefined();
+  } catch (e) {
+    try {
+      validation(setup).function();
+    } catch (errorValidatingSetup) {
+      throw new Error(`Error validating 'setup'. ${errorValidatingSetup.message}`);
+    }
+  }
+  
+  try {
+    validation(mounted).undefined();
+  } catch (e) {
+    try {
+      validation(mounted).function();
+    } catch (errorValidatingMounted) {
+      throw new Error(`Error validating 'mounted'. ${errorValidatingMounted.message}`);
+    }
+  }
+  
+  try {
+    validation(data).undefined();
+  } catch (e) {
+    try {
+      validation(data).object();
+    } catch (errorValidatingData) {
+      throw new Error(`Error validating 'data'. ${errorValidatingData.message}`);
+    }
+  }
+  
+  try {
+    validation(methods).undefined();
+  } catch (e) {
+    try {
+      validation(methods).object();
+      for (const methodName in methods) {
+        validation(methods[methodName]).function();
+      }
+    } catch (errorValidatingMethods) {
+      throw new Error(`Error validating 'methods'. ${errorValidatingMethods.message}`);
+    }
+  }
+  
+  try {
+    validation(watchers).undefined();
+  } catch (e) {
+    try {
+      validation(watchers).object();
+      for (const watcherEvent in watchers) {
+        validation(watchers[watcherEvent]).function();
+      }
+    } catch (errorValidatingWatchers) {
+      throw new Error(`Error validating 'watchers'. ${errorValidatingWatchers.message}`);
+    }
   }
 
   const appInstance = this;
@@ -147,7 +181,6 @@ name,
     }
 
     this.rootElement = rootElement;
-    console.log('innerHTML: ', this.rootElement.innerHTML);
     this.rootElement.innerHTML += this.template;
     const boundElements = rootElement.querySelectorAll('[data-bind]');
     const boundAttrCallbacks = {};
@@ -324,7 +357,6 @@ App.prototype.buildComponents = function(rootElement) {
   
     const components = rootElement.querySelectorAll('[data-component]');
     if(components.length === 0) return;
-    console.log('components: ', components);
     components.forEach(component => {
       const props = {};
       for(const prop in component.dataset) {
@@ -347,4 +379,8 @@ App.prototype.createStore = function(name, options) {
   this.$stores[name] = new Store(this, name, options);
 }
 
-export default App;
+export {
+  App,
+  PubSub,
+  Store
+};
