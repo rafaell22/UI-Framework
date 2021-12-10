@@ -1,4 +1,4 @@
-import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.2.0/validation.js';
+import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.2.1/validation.js';
 import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/PubSub.js';
 import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/Store.js';
 
