@@ -94,6 +94,7 @@ name,
   
   try {
     validation(setup).undefined();
+    setup = this.NOOP;
   } catch (e) {
     try {
       validation(setup).function();
@@ -104,6 +105,7 @@ name,
   
   try {
     validation(mounted).undefined();
+    mounted = this.NOOP;
   } catch (e) {
     try {
       validation(mounted).function();
