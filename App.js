@@ -14,7 +14,7 @@ import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/Sto
  * @param {function} boot Function to run during app creation. Use it to create libraries, stores and other variables that should be available to all components
 **/
 function App(boot) {
-  this.$version = '0.0.33';
+  this.$version = '0.0.34';
   this._componentTypes = {};
   this._components = [];
   this.$libraries = {};
