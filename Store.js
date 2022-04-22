@@ -27,7 +27,7 @@ function Store(app, name, {
         for(const attr in state) {
             _state[attr] = state[attr];
             Object.defineProperty(this.state, attr, {
-                get: (function(state) { return  state }).bind(this, _state[attr]),
+                get: (function(stateAttr) { return  stateAttr }).bind(this, _state[attr]),
                 set: this.appInstance.NOOP,
             });
         }
@@ -37,7 +37,7 @@ function Store(app, name, {
     if(mutations) {
         for(const mutation in mutations) {
             _mutations[mutation] = (function(mutationName, mutation, state, ...args) {
-                mutation.call(this, { state }, ...args);
+                mutation.call(this, { state, mutations: _mutations }, ...args);
                 this.appInstance.$pubSub.publish(`store.${this.name}.${mutationName}`);
             }).bind(this, mutation, mutations[mutation], _state);
         }
@@ -53,18 +53,21 @@ function Store(app, name, {
     this.getters = {};
     if(getters) {
         for(const getter in getters) {
-            Object.defineProperty(this.getters, getter, {
-                get: (function(getter) {
-                    return getter.call(this);
-                }).bind(this, getters[getter])
-            });
+            this.getters[getter] = getters[getter].bind(this, { state: this.state });
         }
+        // for(const getter in getters) {
+        //     Object.defineProperty(this.getters, getter, {
+        //         get: (function(getter) {
+        //             return getter.call(this);
+        //         }).bind(this, getters[getter])
+        //     });
+        // }
     }
     
     this.methods = {};
     if(methods) {
         for(const method in methods) {
-            this.methods[getter] = getters[getter].bind(this);
+            this.methods[method] = methods[method].bind(this);
         }
     }
 }
