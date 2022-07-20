@@ -1,6 +1,7 @@
 import validation from 'https://cdn.jsdelivr.net/gh/rafaell22/type-validation@0.2.2/validation.js';
-import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/PubSub.js';
+// import PubSub from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/PubSub.js';
 // import Store from 'https://cdn.jsdelivr.net/gh/rafaell22/UI-Framework@0.0.32/Store.js';
+import PubSub from './PubSub.js';
 import Store from './Store.js';
 
 /**
