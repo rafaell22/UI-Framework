@@ -22,14 +22,9 @@ function Store(app, name, {
     this.name = name;
     
     const _state = {};
-    this.state = {};
     if(state) {
         for(const attr in state) {
             _state[attr] = state[attr];
-            Object.defineProperty(this.state, attr, {
-                get: (function(stateAttr) { return  stateAttr }).bind(this, _state[attr]),
-                set: this.appInstance.NOOP,
-            });
         }
     }
     
@@ -46,14 +41,14 @@ function Store(app, name, {
     this.actions = {};
     if(actions) {
         for(const action in actions) {
-            this.actions[action] = actions[action].bind(this, { state: this.state, mutations: _mutations });
+            this.actions[action] = actions[action].bind(this, { state: _state, mutations: _mutations });
         }
     }
     
     this.getters = {};
     if(getters) {
         for(const getter in getters) {
-            this.getters[getter] = getters[getter].bind(this, { state: this.state });
+            this.getters[getter] = getters[getter].bind(this, { state: _state });
         }
         // for(const getter in getters) {
         //     Object.defineProperty(this.getters, getter, {

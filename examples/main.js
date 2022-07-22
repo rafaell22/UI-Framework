@@ -11,17 +11,22 @@ app.createStore(
     mutations: {
       addInput: function({ state }, input) {
         state.inputs.push(input);
-        console.log('inputs: ', state.inputs);
+      },
+      clearInputs: function({ state }) {
+        state.inputs = [];
       }
     },
     actions: {
       addInput: function({ mutations }, input) {
         mutations.addInput(input);
+      },
+      clearInputs: function({ mutations }) {
+        mutations.clearInputs();
       }
     },
     getters: {
-      inputs: function() {
-        return this.state.inputs;
+      inputs: function({ state }) {
+        return state.inputs;
       }
     }
   }
@@ -56,6 +61,11 @@ app.createComponent(
                   '@click': 'eventAddInput'
                 }"
               >
+              <input type="button" value="CLEAR VALUES"
+                data-bind="{
+                  '@click': 'eventClearInputs'
+                }"
+              >
               <p>Store - Inputs: </p>
               <ul id='inputs-list'>
               </ul>
@@ -77,13 +87,16 @@ app.createComponent(
             },
             eventAddInput: function(e) {
                 this.app.$stores.form.actions.addInput(this.input);
+            },
+            eventClearInputs: function(e) {
+              this.app.$stores.form.actions.clearInputs();
             }
         },
         mounted: function() {
           this.inputsList = this.rootElement.querySelector('#inputs-list');
           
           this.app.$pubSub.subscribe('store.form.addInput', (function() {
-            const inputs = this.app.$stores.form.getters.inputs;
+            const inputs = this.app.$stores.form.getters.inputs();
             const listItem = document.createElement('LI');
             listItem.innerText = inputs[inputs.length - 1];
             this.inputsList.appendChild(listItem);
