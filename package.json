@@ -1,0 +1,24 @@
+{
+  "name": "ui-framework",
+  "version": "1.0.0",
+  "description": "Framework based on VUE.js. Made to be light to use when developing using a mobile device.",
+  "main": "App.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "browser-sync start -s -w --index examples/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaell22/UI-Framework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafaell22/UI-Framework/issues"
+  },
+  "homepage": "https://github.com/rafaell22/UI-Framework#readme"
+}
