@@ -1,0 +1,23 @@
+<div class="form-field">
+  <p class="title" 
+    :innerText="title"
+  ></p>
+  <input type="text"
+    @input="eventUpdateInput"
+  >
+  <p class="title"> 
+    You inserted: 
+    <span 
+      :textContent="input"
+    ></span>
+  </p>
+  <input type="button" value="SUBMIT"
+    @click="eventAddInput"
+  >
+  <input type="button" value="CLEAR VALUES"
+    @click="eventClearInputs"
+  >
+  <p>Store - Inputs: </p>
+  <ul id='inputs-list'>
+  </ul>
+</div>
