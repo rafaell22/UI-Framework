@@ -2,7 +2,7 @@ import CustomElement from '../CustomElement.js';
 
 export default class Col extends CustomElement {
     constructor() {
-        super('Col');
+        super('u-col', 'Col');
     }
   
     props() {

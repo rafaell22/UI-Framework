@@ -57,7 +57,8 @@ function App(boot) {
  * @param  {object}   watchers               Create watchers that subscribe to the App's PubSub. The key avlues correspond to the PubSub events.
  */
 App.prototype.createComponent = async function(
-name, 
+  componentName,
+  componentClass, 
 /*{
   template,
   styles,
@@ -68,8 +69,8 @@ name,
   methods,
   watchers,
 }*/) {
-    const component = await import(`./components/${name}/main.js`);
-    console.log(typeof component);
+    const component = await import(`./components/${componentClass}/main.js`);
+    customElements.define(componentName, component.default);
     return;
   try {
     validation(template).string();

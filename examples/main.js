@@ -21,17 +21,6 @@ window.app = new App();
 // app.start();
 
 /*
-class Row extends CustomElement {
-  constructor() {
-    super('Row');
-  }
-}
-
-class DiceBag extends CustomElement {
-  constructor() {
-    super('DiceBag');
-  }
-}
 
 class Dice extends CustomElement {
   constructor() {
@@ -56,4 +45,8 @@ customElements.define('u-dice-bag', DiceBag);
 
 */
 
-app.createComponent('Col');
+(async function() {
+  await app.createComponent('u-col', 'Col');
+  await app.createComponent('u-row', 'Row');
+  await app.createComponent('u-dice-bag', 'DiceBag');
+})()
