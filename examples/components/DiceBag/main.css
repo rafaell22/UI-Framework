@@ -1,0 +1,13 @@
+
+
+.dice-bag {
+    padding: 10px;
+}
+
+.dice-bag select {
+    min-width: 100px;
+}
+
+.dice-bag option {
+    text-align: center;
+}

@@ -4,6 +4,7 @@ import storeForm from './stores/storeForm.js';
 
 window.app = new App();
 
+
 // app.createStore(
 //   'form',
 //   storeForm
@@ -19,38 +20,40 @@ window.app = new App();
 // 
 // app.start();
 
-class Input extends HTMLElement {
+/*
+class Row extends CustomElement {
   constructor() {
-    super();
-    
-    this.attachShadow({mode: 'open'});
-    const style = document.createElement('style');
-    style.textContent = `
-      .form-field .title {
-        text-transform: uppercase;
-      }
-    `;
-    this.shadowRoot.append(style);
-    this.shadowRoot.innerHTML(`
-      <div class="form-field">
-        <p class="title"></p>
-      </div>
-    `);
-    
-    // Insert icon
-    // let imgUrl;
-    // if(this.hasAttribute('img')) {
-    //   imgUrl = this.getAttribute('img');
-    // } else {
-    //   imgUrl = 'img/default.png';
-    // }
-    // 
-    // const img = document.createElement('img');
-    // img.src = imgUrl;
-    // icon.appendChild(img);
-    
-    
+    super('Row');
   }
 }
 
-customElements.define('u-input', Input);
+class DiceBag extends CustomElement {
+  constructor() {
+    super('DiceBag');
+  }
+}
+
+class Dice extends CustomElement {
+  constructor() {
+    super(Dice);
+    
+    // console.log('sides: ', this.getAttribute('sides'));
+    //console.log('gerAttr: ', this.hasAttribute('sides'));
+    // console.log('gerAttrs: ', this.getAttributeNames());
+
+    //if(this.hasAttribute('sides')) {
+    //    this.shadowRoot.querySelector('.dice-sides-number').innerText = this.getAttribute('sides');
+	// }
+  }
+}
+
+// customElements.define('u-col', Col);
+customElements.define('u-row', Row);
+
+customElements.define('u-dice', Dice);
+ 
+customElements.define('u-dice-bag', DiceBag);
+
+*/
+
+app.createComponent('Col');
