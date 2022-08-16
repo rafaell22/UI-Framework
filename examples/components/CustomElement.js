@@ -41,13 +41,14 @@ export default class CustomElement extends HTMLElement {
               
               Object.defineProperty(this, propName, {
                 enumerable: true,
-                get: function() {
-                  
-                },
+                get: (function(propName) {
+                  this.getAttribute(propName);
+                }).bind(this, propName),
                 set: (function(propName, required, newValue) {
                   if (required) {
                     try {
                       validation(newValue).defined().notNull();
+                      this.setAttribute(newValue);
                     } catch (errorValidatingNewValue) {
                       throw new Error(`Error validating ${propName} in ${this.componentName}. Value is required (received ${newValue})`);
                     }
