@@ -42,10 +42,10 @@ PubSub.prototype.publish = function(event, args = []) {
  * Unsubscribe a certain listener to from an event
  * @param  {string} id               id that identifies the listener
  */
-PubSub.prototype.unsubscribe = function(id) {
-    const eventIndex = this.events.findIndex(event => event.id === id);
+PubSub.prototype.unsubscribe = function(event, id) {
+    const eventIndex = this.events[event].findIndex(event => event.id === id);
     if(eventIndex >= 0) {
-        events.splice(eventIndex, 1);
+        this.events.splice(eventIndex, 1);
     }
 }
 
