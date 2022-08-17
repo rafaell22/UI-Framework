@@ -45,7 +45,7 @@ PubSub.prototype.publish = function(event, args = []) {
 PubSub.prototype.unsubscribe = function(event, id) {
     const eventIndex = this.events[event].findIndex(event => event.id === id);
     if(eventIndex >= 0) {
-        this.events.splice(eventIndex, 1);
+        this.events[event].splice(eventIndex, 1);
     }
 }
 
