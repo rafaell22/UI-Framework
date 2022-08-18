@@ -53,8 +53,10 @@ export default class CustomElement extends HTMLElement {
                       throw new Error(`Error validating ${propName} in ${this.componentName}. Value is required (received ${newValue})`);
                     }
                   }
-                }).bind(this, propName, props[propName].required, )
+                }).bind(this, propName, props[propName].required, props[propName].type)
               });
+              
+              this[propName] = props[propName].default;
             }
           } catch (errorValidatingProps) {
             throw new Error(`Error validating 'props'. ${errorValidatingProps.message}`);
